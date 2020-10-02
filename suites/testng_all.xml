@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Run All Testcases w Chrome">
+    <listeners>
+        <listener class-name="listeners.LocalWebDriverListener"/>
+    </listeners>
+
+    <suite-files>
+        <suite-file path="testng_tc01.xml"/>
+        <suite-file path="testng_tc02.xml"/>
+        <!-- <suite-file path="testng_tc03.xml"/> -->
+        <suite-file path="testng_tc04.xml"/>
+        <suite-file path="testng_tc05.xml"/>
+        <suite-file path="testng_tc06.xml"/>
+    </suite-files>
+</suite>
