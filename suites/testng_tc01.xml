@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Chrome testsuite tc01_01">
+    <listeners>
+        <listener class-name="listeners.LocalWebDriverListener"/>
+    </listeners>
+
+    <test name="Chrome TC_01_Login">
+        <parameter name="browserName" value="chrome"/>
+        <classes>
+            <class name="tests.TC_01_Login.TC_01_Login"/>
+        </classes>
+    </test>
+</suite>
