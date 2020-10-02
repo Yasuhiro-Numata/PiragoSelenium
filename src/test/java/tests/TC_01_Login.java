@@ -1,12 +1,8 @@
-package tests.TC_01_Login;
+package tests;
 
 import model.Account;
-import model.TestDataModel;
 import org.testng.annotations.Test;
 import pageObjects.initializePageObjects.PageFactoryInitializer;
-import pageObjects.pages.LoginPage;
-import utils.JsonCacheUtils;
-import utils.Log;
 
 public class TC_01_Login extends PageFactoryInitializer{
     private Account account = testDataModel.getAccount();
@@ -16,5 +12,4 @@ public class TC_01_Login extends PageFactoryInitializer{
         openUrlDefault();
         loginPage().login(account.getUserName(), account.getPass());
     }
-
 }

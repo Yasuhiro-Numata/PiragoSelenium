@@ -280,4 +280,60 @@ public class BaseMethod extends InitMethod {
         String browserName = caps.getBrowserName();
         Shutterbug.shootPage(getWebDriver()).withName(imageName + browserName).save(location);
     }
+
+    private static boolean waitUntilDownloadCompleted(WebDriver driver, int timeMax) throws InterruptedException {
+        //define the endTime
+        long endTime = System.currentTimeMillis() + (timeMax * 1000);
+        WebDriverWait wait = new WebDriverWait(driver, 1000);
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+
+        js.executeScript("window.open()");
+        String mainTab = driver.getWindowHandle();
+        Set<String> allWindows = driver.getWindowHandles();
+        for (String curWindow : allWindows) {
+            driver.switchTo().window(curWindow);
+        }
+
+        //navigate to chrome downloads
+        driver.get("chrome://downloads");
+
+        boolean done = false;
+        do {
+            try {
+                //get the download percentage
+                done = (boolean) js.executeScript(
+                        "return typeof(document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList downloads-item').shadowRoot.querySelector('#show')) === \"object\"");
+                if (done) {
+                    break;
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            //exit method if the download not completed with in MaxTime.
+        } while (System.currentTimeMillis() <= endTime);
+
+        WebElement root = driver.findElement(By.tagName("downloads-manager"));
+        WebElement shadowRoot = expandRootElement(driver, root);
+
+        WebElement downloadToolbar = shadowRoot.findElement(By.cssSelector("downloads-toolbar"));
+        WebElement shadowDownloadToolbar = expandRootElement(driver, downloadToolbar);
+
+        WebElement moreActionBtn = shadowDownloadToolbar.findElement(By.tagName("cr-icon-button"));
+        moreActionBtn.click();
+
+        WebElement clearBtn = shadowDownloadToolbar.findElement(By.cssSelector("#moreActionsMenu > button.dropdown-item.clear-all"));
+        wait.until(ExpectedConditions.elementToBeClickable(clearBtn)).click();
+
+        driver.close();
+        driver.switchTo().window(mainTab);
+        return done;
+    }
+    private static WebElement expandRootElement(WebDriver driver, WebElement element) {
+        WebElement ele = (WebElement) ((JavascriptExecutor) driver)
+                .executeScript("return arguments[0].shadowRoot",element);
+        return ele;
+    }
+
+
+
 }

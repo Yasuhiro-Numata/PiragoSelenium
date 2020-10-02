@@ -12,6 +12,9 @@ import pageObjects.initializePageObjects.PageFactoryInitializer;
 
 public class QuotationPage extends BaseMethod {
 
+    @FindBy(css = ".last")
+    public WebElement txtContractManagement;
+
     @FindBy(linkText = "見積書")
     public WebElement txtQuotation;
 
@@ -24,8 +27,7 @@ public class QuotationPage extends BaseMethod {
 
     public QuotationPage exportPDFFile() throws InterruptedException {
         Actions action = new Actions(getWebDriver());
-//TODO
-        action.moveToElement(txtQuotation).build().perform();
+        action.moveToElement(txtContractManagement).build().perform();
         click(txtQuotation);
         Thread.sleep(InitMethod.SLEEP_2000_MS);
         click(compilation);

@@ -36,7 +36,7 @@ public class EmployeeManagementPage extends BaseMethod {
         Thread.sleep(InitMethod.SLEEP_5000_MS);
         WebElement video = getWebDriver().findElement(By.cssSelector(".ytp-progress-bar-container > div[role='slider']"));
         String duration = video.getAttribute("aria-valuenow");
-        Log.info("------------------duration: "+duration);
+        System.out.println("------------------duration: "+duration);
         return this;
     }
 
@@ -46,7 +46,7 @@ public class EmployeeManagementPage extends BaseMethod {
         String beforeDelete = valueTable.getAttribute("innerHTML");
         assertIsDisplayed(iconDelete, InitMethod.SLEEP_1000_MS);
         click(iconDelete);
-        Thread.sleep(InitMethod.SLEEP_1000_MS);
+        Thread.sleep(InitMethod.SLEEP_5000_MS);
         String alertMessage= getWebDriver().switchTo().alert().getText();
         assertEquals("削除してよろしいですか？", alertMessage);
         alertAccept();
