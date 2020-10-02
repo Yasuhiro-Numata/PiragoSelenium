@@ -3,6 +3,7 @@ package controllers.localdriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,6 +25,7 @@ public class LocalDriverFactory {
         if (browserName.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--disable-notifications");
+            options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT);
 //            options.addArguments("--ignore-certificate-errors");
             WebDriverManager.chromedriver().setup();
             driver = new ChromeDriver(options);
