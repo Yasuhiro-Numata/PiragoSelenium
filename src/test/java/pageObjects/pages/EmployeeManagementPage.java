@@ -4,8 +4,7 @@ import controllers.BaseMethod;
 import controllers.InitMethod;
 import controllers.WebDriverManager;
 import model.Account;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 import pageObjects.initializePageObjects.PageFactoryInitializer;
@@ -45,11 +44,19 @@ public class EmployeeManagementPage extends BaseMethod {
         WebElement valueTable = getWebDriver().findElement(By.xpath("/html/body/div[3]/div[1]/div[3]/table/tbody"));
         String beforeDelete = valueTable.getAttribute("innerHTML");
         assertIsDisplayed(iconDelete, InitMethod.SLEEP_1000_MS);
-        click(iconDelete);
-        Thread.sleep(InitMethod.SLEEP_5000_MS);
-        String alertMessage= getWebDriver().switchTo().alert().getText();
-        assertEquals("削除してよろしいですか？", alertMessage);
-        alertAccept();
+        try {
+            click(iconDelete);
+            Thread.sleep(InitMethod.SLEEP_5000_MS);
+        } catch (UnhandledAlertException f) {
+            try {
+                Alert alert = getWebDriver().switchTo().alert();
+                String alertText = alert.getText();
+                System.out.println("Alert data: " + alertText);
+                alert.accept();
+            } catch (NoAlertPresentException e) {
+                e.printStackTrace();
+            }
+        }
         Thread.sleep(InitMethod.SLEEP_3000_MS);
         String afterDelete = valueTable.getAttribute("innerHTML");
         Assert.assertNotEquals(beforeDelete, afterDelete);
