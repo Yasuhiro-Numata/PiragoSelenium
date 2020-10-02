@@ -15,17 +15,25 @@ public class TodoListPage extends BaseMethod {
     public WebElement btnEdit;
 
     public TodoListPage goToEditState() throws InterruptedException {
-        WebElement checkList1 = getWebDriver().findElement(By.xpath("/html/body/div[3]/div[7]/div[3]/table/tbody/tr[1]"));
-        String content = checkList1.getAttribute("readonly");
-        String priority = checkList1.getAttribute("style");
+        Thread.sleep(InitMethod.SLEEP_2000_MS);
+        WebElement content = getWebDriver().findElement(By.cssSelector("input[value='ステータス']"));
+        String readonly = content.getAttribute("readonly");
+        Assert.assertNotNull(readonly);
+
+        WebElement priority = getWebDriver().findElement(By.xpath("/html/body/div[3]/div[7]/div[3]/table/tbody/tr[1]//select"));
+        String attP = priority.getAttribute("style");
+        System.out.println("----------------"+attP);
+
         assertIsDisplayed(btnEdit, InitMethod.SLEEP_1000_MS);
         click(btnEdit);
         Thread.sleep(InitMethod.SLEEP_3000_MS);
-        WebElement checkList2 = getWebDriver().findElement(By.xpath("/html/body/div[3]/div[7]/div[3]/table/tbody/tr[1]"));
-        String content1 = checkList2.getAttribute("readonly");
-        String priority1 = checkList2.getAttribute("style");
-        Assert.assertNotEquals(content, content1);
-        Assert.assertNotEquals(priority, priority1);
+
+        String readonly1 = content.getAttribute("readonly");
+        Assert.assertNull(readonly1);
+        String attP1 = priority.getAttribute("style");
+        System.out.println("----------------"+attP1);
+
+        Assert.assertNotEquals(attP, attP1);
         return this;
     }
 }
